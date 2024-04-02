@@ -7,8 +7,8 @@ def boton_clicado():
 # Creamos una instancia de la clase Tk, que representa la ventana principal de la aplicación
 ventana = tk.Tk()
 
-# Configuramos el tamaño de la ventana
-ventana.geometry("400x300")
+# Configuramos la ventana para que ocupe toda la pantalla
+ventana.attributes("-fullscreen", True)
 
 # Cambiamos el color de fondo de la ventana
 ventana.configure(bg="#0c9ae2")
@@ -16,11 +16,11 @@ ventana.configure(bg="#0c9ae2")
 # Añadimos un título a la ventana
 ventana.title("Mi Ventana")
 
-# Creamos cuatro botones con forma curva
-boton1 = tk.Button(ventana, text="Botón 1", command=boton_clicado, border=5)
-boton2 = tk.Button(ventana, text="Botón 2", command=boton_clicado, border=5)
-boton3 = tk.Button(ventana, text="Botón 3", command=boton_clicado, border=5)
-boton4 = tk.Button(ventana, text="Botón 4", command=boton_clicado, border=5)
+# Creamos cuatro botones con forma cuadrada
+boton1 = tk.Button(ventana, text="Botón 1", command=boton_clicado, border=5, width=10, height=5)
+boton2 = tk.Button(ventana, text="Botón 2", command=boton_clicado, border=5, width=10, height=5)
+boton3 = tk.Button(ventana, text="Botón 3", command=boton_clicado, border=5, width=10, height=5)
+boton4 = tk.Button(ventana, text="Botón 4", command=boton_clicado, border=5, width=10, height=5)
 
 # Los colocamos en la parte superior izquierda de la ventana
 boton1.grid(row=0, column=0, padx=10, pady=10)
