@@ -1,0 +1,16 @@
+import tkinter as tk
+
+# Creamos una instancia de la clase Tk, que representa la ventana principal de la aplicación
+ventana = tk.Tk()
+
+# Configuramos el tamaño de la ventana
+ventana.geometry("400x300")
+
+# Cambiamos el color de fondo de la ventana
+ventana.configure(bg="#0c9ae2")
+
+# Añadimos un título a la ventana
+ventana.title("Sistema Operativo")
+
+# Mostramos la ventana
+ventana.mainloop()
