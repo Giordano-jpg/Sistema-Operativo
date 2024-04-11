@@ -1,11 +1,35 @@
+
 import tkinter as tk
 from PIL import Image, ImageTk
+import time
+from datetime import datetime
+
 
 def boton_clicado():
     print("Botón clicado")
 
 def cerrar_ventana():
-    ventana.destroy()
+    fondo_label.destroy()
+    boton1.destroy()
+    boton2.destroy()
+    boton3.destroy()
+    boton4.destroy()
+    bandera_label.destroy()
+    etiqueta_bateria.destroy()
+    canvas.destroy()
+    label_texto = tk.Label(ventana, text="Apagando", font=("Arial", 24), bg="black", fg="white")
+    pos_x = ancho_pantalla // 2
+    pos_y = alto_pantalla // 2
+    label_texto.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+    ventana.after(2500, ventana.destroy)
+
+
+def actualizar_fecha_y_hora():
+    now = datetime.now()
+    fecha_hora_actual = now.strftime("%Y-%m-%d %H:%M:%S")
+    label_fecha_hora.config(text=fecha_hora_actual)
+    ventana.after(1000, actualizar_fecha_y_hora)
+
 
 ventana = tk.Tk()
 ventana.attributes("-fullscreen", True)
@@ -17,7 +41,7 @@ imagen_fondo = ImageTk.PhotoImage(imagen_fondo)
 fondo_label = tk.Label(ventana, image=imagen_fondo)
 fondo_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-ventana.configure(bg="#0c9ae2")
+ventana.configure(bg="black")
 
 ancho_pantalla = ventana.winfo_screenwidth()
 alto_pantalla = ventana.winfo_screenheight()
@@ -76,4 +100,8 @@ imagen_bandera_espana_tk = ImageTk.PhotoImage(imagen_bandera_espana)
 bandera_label = tk.Label(ventana, image=imagen_bandera_espana_tk)
 bandera_label.place(relx=0, rely=1.0, anchor='sw')
 
+label_fecha_hora = tk.Label(ventana, font=("Arial", 18), bg="white")
+label_fecha_hora.place(relx=0.95, rely=0.99, anchor='se')
+actualizar_fecha_y_hora()
 ventana.mainloop()
+
