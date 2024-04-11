@@ -14,6 +14,7 @@ def cerrar_ventana():
     boton2.destroy()
     boton3.destroy()
     boton4.destroy()
+    label_fecha_hora.destroy()
     bandera_label.destroy()
     etiqueta_bateria.destroy()
     canvas.destroy()
