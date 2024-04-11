@@ -1,86 +1,79 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 
-# Función a la que se llamará cuando se haga clic en el botón
 def boton_clicado():
     print("Botón clicado")
 
-# Función a la que se llamará cuando se haga clic en el botón (Cerrar ventana)
 def cerrar_ventana():
     ventana.destroy()
 
-# Creamos una instancia de la clase Tk, que representa la ventana principal de la aplicación
-ventana = tk.Tk()
+# Función para obtener el porcentaje de batería (simulada)
+def obtener_porcentaje_bateria():
+    # Simplemente devuelve un valor fijo para este ejemplo
+    return 75
 
-# Configuramos la ventana para que ocupe toda la pantalla
+ventana = tk.Tk()
 ventana.attributes("-fullscreen", True)
 
-# Cargar imagen de fondo
 imagen_fondo = Image.open("fernando-alonso.png")
 imagen_fondo = imagen_fondo.resize((ventana.winfo_screenwidth(), ventana.winfo_screenheight()), Image.BICUBIC)
 imagen_fondo = ImageTk.PhotoImage(imagen_fondo)
 
-# Establecer imagen de fondo
 fondo_label = tk.Label(ventana, image=imagen_fondo)
 fondo_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-# Cambiamos el color de fondo de la ventana
 ventana.configure(bg="#0c9ae2")
 
-# Obtenemos las dimensiones de la pantalla
 ancho_pantalla = ventana.winfo_screenwidth()
 alto_pantalla = ventana.winfo_screenheight()
 
-# Cargar imagen
+# Cambiar el estilo de los botones
+estilo_boton = {"font": ("Helvetica", 12, "bold"), "bg": "#FF0000", "fg": "white", "relief": "raised", "bd": 2}
+
 imagen_original = Image.open("nano.jpg")
 imagen_original = imagen_original.resize((100, 100), Image.BICUBIC)
 imagen_original2 = Image.open("cabeza_prueba.jpg")
 imagen_original2 = imagen_original2.resize((100, 100), Image.BICUBIC)
 
-# Convertir la imagen a PhotoImage
 imagen_boton = ImageTk.PhotoImage(imagen_original)
 imagen_boton_serpiente = ImageTk.PhotoImage(imagen_original2)
 
-# Creamos los botones en la parte superior izquierda (1/4 del ancho y 1/4 del alto)
-boton1 = tk.Button(ventana, image=imagen_boton, command=boton_clicado)
+# Crear botones con el estilo personalizado
+boton1 = tk.Button(ventana, image=imagen_boton, command=boton_clicado, **estilo_boton)
 boton1.place(x=ancho_pantalla // 80, y=alto_pantalla // 50, width=100, height=100)
 
-boton2 = tk.Button(ventana, image=imagen_boton_serpiente, command=boton_clicado)
+boton2 = tk.Button(ventana, image=imagen_boton_serpiente, command=boton_clicado, **estilo_boton)
 boton2.place(x=ancho_pantalla // 9, y=alto_pantalla // 50, width=100, height=100)
 
-boton3 = tk.Button(ventana, image=imagen_boton, command=boton_clicado)
+boton3 = tk.Button(ventana, image=imagen_boton, command=boton_clicado, **estilo_boton)
 boton3.place(x=ancho_pantalla // 80, y=alto_pantalla // 5, width=100, height=100)
 
-# Botón para cerrar la ventana
-boton4 = tk.Button(ventana, text="Cerrar", command=cerrar_ventana)
+boton4 = tk.Button(ventana, text="Cerrar", command=cerrar_ventana, **estilo_boton)
 boton4.place(x=ancho_pantalla // 9, y=alto_pantalla // 5, width=100, height=100)
 
-# Creamos un rectángulo horizontal en la parte inferior de la pantalla (toda la anchura y 1/4 de la altura)
 canvas = tk.Canvas(ventana, bg="white")
 canvas.place(x=ancho_pantalla // 2000, y=alto_pantalla // 1.08, width=ancho_pantalla, height=alto_pantalla // 13)
 
-# Carga la imagen de la batería
 imagen_original_bateria = Image.open("bateria-llena.png")
 ancho_original_bateria, alto_original_bateria = imagen_original_bateria.size
 
-# Escala la imagen de la batería para que se ajuste al tamaño deseado
 ancho_deseado_bateria = 50
 escala_bateria = ancho_deseado_bateria / ancho_original_bateria
 nuevo_ancho_bateria = int(ancho_original_bateria * escala_bateria)
 nuevo_alto_bateria = int(alto_original_bateria * escala_bateria)
 
-# Redimensiona la imagen de la batería manteniendo la relación de aspecto
 imagen_original_bateria.thumbnail((nuevo_ancho_bateria, nuevo_alto_bateria))
-
-# Convierte la imagen de la batería en un objeto Tkinter PhotoImage
 imagen_bateria = ImageTk.PhotoImage(imagen_original_bateria)
 
-# Crea un widget de etiqueta para mostrar la imagen de la batería
 etiqueta_bateria = tk.Label(ventana, image=imagen_bateria)
 etiqueta_bateria.pack()
-
-# Coloca la imagen de la batería en la esquina inferior derecha de la ventana
 etiqueta_bateria.place(relx=1.0, rely=1.0, anchor='se')
 
-# Mostramos la ventana
+# Obtener el porcentaje de batería
+porcentaje_bateria = obtener_porcentaje_bateria()
+
+# Mostrar el porcentaje de batería en un Label
+label_porcentaje_bateria = tk.Label(ventana, text=f"{porcentaje_bateria}%", font=("Helvetica", 20), bg="#0c9ae2", fg="white")
+label_porcentaje_bateria.place(relx=0.5, rely=0.1, anchor='center')
+
 ventana.mainloop()
