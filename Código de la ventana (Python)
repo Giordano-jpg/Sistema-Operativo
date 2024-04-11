@@ -16,7 +16,7 @@ ventana = tk.Tk()
 ventana.attributes("-fullscreen", True)
 
 # Cargar imagen de fondo
-imagen_fondo = Image.open("escudo_aston.jpg")
+imagen_fondo = Image.open("fernando-alonso.png")
 imagen_fondo = imagen_fondo.resize((ventana.winfo_screenwidth(), ventana.winfo_screenheight()), Image.BICUBIC)
 imagen_fondo = ImageTk.PhotoImage(imagen_fondo)
 
@@ -58,6 +58,29 @@ boton4.place(x=ancho_pantalla // 9, y=alto_pantalla // 5, width=100, height=100)
 # Creamos un rectángulo horizontal en la parte inferior de la pantalla (toda la anchura y 1/4 de la altura)
 canvas = tk.Canvas(ventana, bg="white")
 canvas.place(x=ancho_pantalla // 2000, y=alto_pantalla // 1.08, width=ancho_pantalla, height=alto_pantalla // 13)
+
+# Carga la imagen de la batería
+imagen_original_bateria = Image.open("bateria-llena.png")
+ancho_original_bateria, alto_original_bateria = imagen_original_bateria.size
+
+# Escala la imagen de la batería para que se ajuste al tamaño deseado
+ancho_deseado_bateria = 50
+escala_bateria = ancho_deseado_bateria / ancho_original_bateria
+nuevo_ancho_bateria = int(ancho_original_bateria * escala_bateria)
+nuevo_alto_bateria = int(alto_original_bateria * escala_bateria)
+
+# Redimensiona la imagen de la batería manteniendo la relación de aspecto
+imagen_original_bateria.thumbnail((nuevo_ancho_bateria, nuevo_alto_bateria))
+
+# Convierte la imagen de la batería en un objeto Tkinter PhotoImage
+imagen_bateria = ImageTk.PhotoImage(imagen_original_bateria)
+
+# Crea un widget de etiqueta para mostrar la imagen de la batería
+etiqueta_bateria = tk.Label(ventana, image=imagen_bateria)
+etiqueta_bateria.pack()
+
+# Coloca la imagen de la batería en la esquina inferior derecha de la ventana
+etiqueta_bateria.place(relx=1.0, rely=1.0, anchor='se')
 
 # Mostramos la ventana
 ventana.mainloop()
