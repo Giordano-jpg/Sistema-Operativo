@@ -5,8 +5,13 @@ import time
 from datetime import datetime
 
 
+def iniciar():
+    canvas_inicio.after(2000, canvas_inicio.destroy)
+
+
 def boton_clicado():
     print("Botón clicado")
+
 
 def cerrar_ventana():
     fondo_label.destroy()
@@ -104,5 +109,11 @@ bandera_label.place(relx=0, rely=1.0, anchor='sw')
 label_fecha_hora = tk.Label(ventana, font=("Arial", 18), bg="white")
 label_fecha_hora.place(relx=0.95, rely=0.99, anchor='se')
 actualizar_fecha_y_hora()
+
+canvas_inicio = tk.Canvas(ventana, bg = "black", width = ancho_pantalla, height = alto_pantalla, highlightthickness = 0)
+canvas_inicio.pack()
+label_inicio = tk.Label(canvas_inicio, text="Iniciando", font=("Arial", 24), bg="black", fg="white")
+label_inicio.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+iniciar()
 ventana.mainloop()
 
