@@ -1,6 +1,7 @@
-
 import tkinter as tk
 from PIL import Image, ImageTk
+import os
+from tkinter import messagebox
 import time
 from datetime import datetime
 
@@ -39,6 +40,59 @@ def actualizar_fecha_y_hora():
         ventana.after(1000, actualizar_fecha_y_hora)
 
 
+def abrir_ventana_carpeta(numero):
+    # Ruta de la carpeta correspondiente
+    carpeta_dir = f"Carpeta_{numero}"
+
+    # Crear la ventana de la carpeta
+    ventana_carpeta = tk.Toplevel()
+    ventana_carpeta.geometry("400x300")
+    ventana_carpeta.title(f"Carpeta {numero}")
+
+    # Contenido de la ventana de la carpeta
+    label_carpeta = tk.Label(ventana_carpeta, text=f"Contenido de la carpeta {numero}")
+    label_carpeta.pack()
+
+    # Textbox para mostrar y editar contenido del archivo de texto
+    text_box = tk.Text(ventana_carpeta, height=10, width=50)
+    text_box.pack()
+
+    # Botón para guardar el contenido en un archivo de texto
+    def guardar_contenido():
+        contenido = text_box.get("1.0", tk.END)
+        # Construir la ruta del archivo utilizando os.path.join
+        archivo_path = os.path.join(carpeta_dir, f"carpeta{numero}_archivo.txt")
+        with open(archivo_path, "w") as archivo:
+            archivo.write(contenido)
+        messagebox.showinfo("Información", "Contenido guardado en el archivo.")
+
+    boton_guardar = tk.Button(ventana_carpeta, text="Guardar", command=guardar_contenido)
+    boton_guardar.pack()
+
+    # Función para listar y mostrar archivos en la carpeta
+    def mostrar_contenido_carpeta():
+        # Obtener la ruta completa de la carpeta correspondiente
+        carpeta_completa = os.path.join(f"Carpeta_{numero}")
+        archivos_en_carpeta = os.listdir(carpeta_completa)
+        messagebox.showinfo("Archivos en la carpeta", "\n".join(archivos_en_carpeta))
+
+    boton_ver_contenido = tk.Button(ventana_carpeta, text="Ver Contenido de la Carpeta", command=mostrar_contenido_carpeta)
+    boton_ver_contenido.pack()
+
+    # Botón para borrar un archivo
+    def borrar_archivo():
+        # Construir la ruta del archivo utilizando os.path.join
+        archivo_path = os.path.join(carpeta_dir, f"carpeta{numero}_archivo.txt")
+        if os.path.exists(archivo_path):
+            os.remove(archivo_path)
+            messagebox.showinfo("Información", "Archivo borrado.")
+        else:
+            messagebox.showerror("Error", "El archivo no existe.")
+
+    boton_borrar_archivo = tk.Button(ventana_carpeta, text="Borrar Archivo", command=borrar_archivo)
+    boton_borrar_archivo.pack()
+
+
 def abrir_explorador_de_archivos():
     # Crear la ventana secundaria
     ventana2 = tk.Toplevel()
@@ -51,11 +105,12 @@ def abrir_explorador_de_archivos():
     imagen_carpeta = ImageTk.PhotoImage(imagen_carpeta)
 
     for i in range(3):
-        etiqueta_carpeta = tk.Label(ventana2, image=imagen_carpeta)
-        etiqueta_carpeta.grid(row=0, column=i, padx=10, pady=10)
+        # Crear un botón para cada imagen de carpeta
+        boton_carpeta = tk.Button(ventana2, image=imagen_carpeta, command=lambda num=i + 1: abrir_ventana_carpeta(num))
+        boton_carpeta.grid(row=0, column=i, padx=10, pady=10)
 
-        # Agregar texto debajo de cada imagen
-        etiqueta_texto = tk.Label(ventana2, text=f"Carpeta {i+1}")
+        # Agregar texto debajo de cada botón
+        etiqueta_texto = tk.Label(ventana2, text=f"Carpeta {i + 1}")
         etiqueta_texto.grid(row=1, column=i)
 
     ventana2.mainloop()
