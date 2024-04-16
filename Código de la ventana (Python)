@@ -31,10 +31,34 @@ def cerrar_ventana():
 
 
 def actualizar_fecha_y_hora():
-    now = datetime.now()
-    fecha_hora_actual = now.strftime("%Y-%m-%d %H:%M:%S")
-    label_fecha_hora.config(text=fecha_hora_actual)
-    ventana.after(1000, actualizar_fecha_y_hora)
+    # Verificar si la etiqueta aún existe
+    if label_fecha_hora.winfo_exists():
+        now = datetime.now()
+        fecha_hora_actual = now.strftime("%Y-%m-%d %H:%M:%S")
+        label_fecha_hora.config(text=fecha_hora_actual)
+        ventana.after(1000, actualizar_fecha_y_hora)
+
+
+def abrir_explorador_de_archivos():
+    # Crear la ventana secundaria
+    ventana2 = tk.Toplevel()
+    ventana2.geometry("420x300+100+100")
+    ventana2.title("Explorador de archivos")
+
+    # Cargar y mostrar las imágenes de carpeta en horizontal con texto debajo
+    imagen_carpeta = Image.open("carpeta.png")
+    imagen_carpeta = imagen_carpeta.resize((100, 100), Image.BICUBIC)
+    imagen_carpeta = ImageTk.PhotoImage(imagen_carpeta)
+
+    for i in range(3):
+        etiqueta_carpeta = tk.Label(ventana2, image=imagen_carpeta)
+        etiqueta_carpeta.grid(row=0, column=i, padx=10, pady=10)
+
+        # Agregar texto debajo de cada imagen
+        etiqueta_texto = tk.Label(ventana2, text=f"Carpeta {i+1}")
+        etiqueta_texto.grid(row=1, column=i)
+
+    ventana2.mainloop()
 
 
 ventana = tk.Tk()
@@ -57,10 +81,13 @@ estilo_boton = {"font": ("Helvetica", 12, "bold"), "bg": "#FF0000", "fg": "white
 
 imagen_original = Image.open("nano.jpg")
 imagen_original = imagen_original.resize((100, 100), Image.BICUBIC)
+imagen_carpeta = Image.open("icono_carpeta.png")
+imagen_carpeta = imagen_carpeta.resize((80, 80), Image.BICUBIC)
 imagen_original2 = Image.open("cabeza_prueba.jpg")
 imagen_original2 = imagen_original2.resize((100, 100), Image.BICUBIC)
 
 imagen_boton = ImageTk.PhotoImage(imagen_original)
+imagen_carpeta = ImageTk.PhotoImage(imagen_carpeta)
 imagen_boton_serpiente = ImageTk.PhotoImage(imagen_original2)
 
 # Crear botones con el estilo personalizado
@@ -70,7 +97,7 @@ boton1.place(x=ancho_pantalla // 80, y=alto_pantalla // 50, width=100, height=10
 boton2 = tk.Button(ventana, image=imagen_boton_serpiente, command=boton_clicado, **estilo_boton)
 boton2.place(x=ancho_pantalla // 9, y=alto_pantalla // 50, width=100, height=100)
 
-boton3 = tk.Button(ventana, image=imagen_boton, command=boton_clicado, **estilo_boton)
+boton3 = tk.Button(ventana, image=imagen_carpeta, command=abrir_explorador_de_archivos, **estilo_boton)
 boton3.place(x=ancho_pantalla // 80, y=alto_pantalla // 5, width=100, height=100)
 
 boton4 = tk.Button(ventana, text="Cerrar", command=cerrar_ventana, **estilo_boton)
@@ -116,4 +143,3 @@ label_inicio = tk.Label(canvas_inicio, text="Iniciando", font=("Arial", 24), bg=
 label_inicio.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
 iniciar()
 ventana.mainloop()
-
