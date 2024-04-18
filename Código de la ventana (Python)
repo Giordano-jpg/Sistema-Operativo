@@ -6,8 +6,28 @@ import time
 from datetime import datetime
 
 
-def iniciar():
-    canvas_inicio.after(2000, canvas_inicio.destroy)
+def mostrar_texto():
+    global texto
+    texto = canvas_inicio.create_text(canvas_inicio.winfo_width() / 2, canvas_inicio.winfo_height() / 2, text="Nombre", fill="#000000", font=("Arial", 20, "bold"))
+    fade_in(texto)
+
+def fade_in(item, alpha=0):
+    if alpha < 255:
+        alpha += 15
+        color = '#%02x%02x%02x' % (alpha, alpha, alpha)
+        canvas_inicio.itemconfig(item, fill=color)
+        ventana.after(60, fade_in, item, alpha)
+    else:
+        ventana.after(900, lambda: fade_out(item))
+
+def fade_out(item, alpha=255):
+    if alpha > 0:
+        alpha -= 15
+        color = '#%02x%02x%02x' % (alpha, alpha, alpha)
+        canvas_inicio.itemconfig(item, fill=color)
+        ventana.after(60, fade_out, item, alpha)
+    else:
+        canvas_inicio.after(500, canvas_inicio.destroy())
 
 
 def boton_clicado():
@@ -194,7 +214,5 @@ actualizar_fecha_y_hora()
 
 canvas_inicio = tk.Canvas(ventana, bg = "black", width = ancho_pantalla, height = alto_pantalla, highlightthickness = 0)
 canvas_inicio.pack()
-label_inicio = tk.Label(canvas_inicio, text="Iniciando", font=("Arial", 24), bg="black", fg="white")
-label_inicio.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
-iniciar()
+ventana.after(1000, mostrar_texto)
 ventana.mainloop()
