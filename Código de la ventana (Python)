@@ -7,6 +7,7 @@ from datetime import datetime
 
 # Mantener una referencia al proceso del juego
 proceso_juego = None
+proceso_terminal = None  # Nuevo proceso para la terminal
 
 def iniciar():
     canvas_inicio.after(2000, canvas_inicio.destroy)
@@ -44,6 +45,7 @@ def cerrar_ventana():
     boton3.destroy()
     boton4.destroy()
     boton5.destroy()
+    
 
     label_fecha_hora.destroy()
     bandera_label.destroy()
@@ -142,13 +144,26 @@ def iniciar_juego():
     # Iniciar el proceso del juego
     proceso_juego = subprocess.Popen(["python", "prueba_juego.py"])
 
+def ejecutar_script_terminal():
+    import os
+
+    # Obtener la ruta del directorio actual del script de Python
+    directorio_actual = os.path.dirname(os.path.realpath(__file__))
+
+    # Ruta al script de terminal dentro del mismo directorio
+    ruta_script = os.path.join(directorio_actual, "script_terminal.sh")
+
+    global proceso_terminal
+    # Ejecutar el script en un proceso de terminal
+    proceso_terminal = subprocess.Popen(["cmd.exe", "/c", ruta_script])
+
+
 ventana = tk.Tk()
 ventana.attributes("-fullscreen", True)
 
 imagen_fondo = Image.open("fernando-alonso.png")
 imagen_fondo = imagen_fondo.resize((ventana.winfo_screenwidth(), ventana.winfo_screenheight()), Image.BICUBIC)
 imagen_fondo = ImageTk.PhotoImage(imagen_fondo)
-
 
 fondo_label = tk.Label(ventana, image=imagen_fondo)
 fondo_label.place(x=0, y=0, relwidth=1, relheight=1)
@@ -166,6 +181,9 @@ imagen_carpeta = Image.open("icono_carpeta.png")
 imagen_carpeta = imagen_carpeta.resize((80, 80), Image.BICUBIC)
 imagen_original2 = Image.open("cabeza_prueba.jpg")
 imagen_original2 = imagen_original2.resize((100, 100), Image.BICUBIC)
+imagen_cmd = Image.open("cmd.png")  # Nueva imagen para el botón del script
+imagen_cmd = imagen_cmd.resize((100, 100), Image.BICUBIC)
+imagen_cmd = ImageTk.PhotoImage(imagen_cmd)
 
 imagen_boton = ImageTk.PhotoImage(imagen_original)
 imagen_carpeta = ImageTk.PhotoImage(imagen_carpeta)
@@ -174,7 +192,7 @@ imagen_boton_serpiente = ImageTk.PhotoImage(imagen_original2)
 boton1 = tk.Button(ventana, image=imagen_boton, command=boton_clicado, **estilo_boton)
 boton1.place(x=ancho_pantalla // 80, y=alto_pantalla // 50, width=100, height=100)
 
-boton2 = tk.Button(ventana, image=imagen_boton_serpiente, command=boton_clicado, **estilo_boton)
+boton2 = tk.Button(ventana, image=imagen_cmd, command=ejecutar_script_terminal, **estilo_boton)
 boton2.place(x=ancho_pantalla // 9, y=alto_pantalla // 50, width=100, height=100)
 
 boton3 = tk.Button(ventana, image=imagen_carpeta, command=abrir_explorador_de_archivos, **estilo_boton)
@@ -216,7 +234,7 @@ label_fecha_hora = tk.Label(ventana, font=("Arial", 18), bg="white")
 label_fecha_hora.place(relx=0.95, rely=0.99, anchor='se')
 actualizar_fecha_y_hora()
 
-canvas_inicio = tk.Canvas(ventana, bg = "black", width = ancho_pantalla, height = alto_pantalla, highlightthickness = 0)
+canvas_inicio = tk.Canvas(ventana, bg="black", width=ancho_pantalla, height=alto_pantalla, highlightthickness=0)
 canvas_inicio.pack()
 ventana.after(1000, mostrar_texto)
 ventana.mainloop()
