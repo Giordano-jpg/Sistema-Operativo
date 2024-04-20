@@ -9,31 +9,35 @@ from datetime import datetime
 proceso_juego = None
 proceso_terminal = None  # Nuevo proceso para la terminal
 
-def iniciar():
-    canvas_inicio.after(2000, canvas_inicio.destroy)
+def inicio(canvas, image, photo, alpha=0):
+    canvas.delete("image")
+    canvas.after(500, fade_in, canvas, image, photo, alpha)
 
-def mostrar_texto():
-    global texto
-    texto = canvas_inicio.create_text(canvas_inicio.winfo_width() / 2, canvas_inicio.winfo_height() / 2, text="NanOS", fill="#000000", font=("Arial", 20, "bold"))
-    fade_in(texto)
-
-def fade_in(item, alpha=0):
-    if alpha < 255:
-        alpha += 15
-        color = '#%02x%02x%02x' % (alpha, alpha, alpha)
-        canvas_inicio.itemconfig(item, fill=color)
-        ventana.after(60, fade_in, item, alpha)
+def fade_in(canvas, image, photo, alpha=0):
+    if alpha < 1:
+        alpha += 0.01
+        canvas.delete('image')
+        image.putalpha(int(alpha * 255))
+        photo = ImageTk.PhotoImage(image)
+        canvas.create_image(ancho_pantalla//2, alto_pantalla//2, image=photo, tags='image')
+        canvas.after(4, fade_in, canvas, image, photo, alpha)
     else:
-        ventana.after(900, lambda: fade_out(item))
+        canvas.after(300, fade_out(canvas, image, photo))
 
-def fade_out(item, alpha=255):
+def fade_out(canvas, image, photo, alpha=1):
     if alpha > 0:
-        alpha -= 15
-        color = '#%02x%02x%02x' % (alpha, alpha, alpha)
-        canvas_inicio.itemconfig(item, fill=color)
-        ventana.after(60, fade_out, item, alpha)
+        alpha -= 0.01
+        canvas.delete('image')
+        image.putalpha(int(alpha * 255))
+        photo = ImageTk.PhotoImage(image)
+        canvas.create_image(ancho_pantalla//2, alto_pantalla//2, image=photo, tags='image')
+        canvas.after(4, fade_out, canvas, image, photo, alpha)
     else:
-        canvas_inicio.after(500, canvas_inicio.destroy)
+        canvas.after(400, canvas.destroy())
+
+
+def boton_clicado():
+    print("Botón clicado")
 
 def boton_clicado():
     print("Botón clicado")
@@ -50,7 +54,7 @@ def cerrar_ventana():
     label_fecha_hora.destroy()
     bandera_label.destroy()
     etiqueta_bateria.destroy()
-    canvas.destroy()
+    canvas_barra.destroy()
     label_texto = tk.Label(ventana, text="Apagando", font=("Arial", 24), bg="black", fg="white")
     pos_x = ancho_pantalla // 2
     pos_y = alto_pantalla // 2
@@ -206,8 +210,8 @@ boton5.place(x=ancho_pantalla // 80, y=alto_pantalla // 2.5, width=100, height=1
 
 
 
-canvas = tk.Canvas(ventana, bg="white")
-canvas.place(x=ancho_pantalla // 2000, y=alto_pantalla // 1.08, width=ancho_pantalla, height=alto_pantalla // 13)
+canvas_barra = tk.Canvas(ventana, bg="white")
+canvas_barra.place(x=ancho_pantalla // 2000, y=alto_pantalla // 1.08, width=ancho_pantalla, height=alto_pantalla // 13)
 
 imagen_original_bateria = Image.open("bateria-llena.png")
 ancho_original_bateria, alto_original_bateria = imagen_original_bateria.size
@@ -234,7 +238,12 @@ label_fecha_hora = tk.Label(ventana, font=("Arial", 18), bg="white")
 label_fecha_hora.place(relx=0.95, rely=0.99, anchor='se')
 actualizar_fecha_y_hora()
 
-canvas_inicio = tk.Canvas(ventana, bg="black", width=ancho_pantalla, height=alto_pantalla, highlightthickness=0)
+canvas_inicio = tk.Canvas(ventana, bg = "black", width = ancho_pantalla, height = alto_pantalla, highlightthickness = 0)
 canvas_inicio.pack()
-ventana.after(1000, mostrar_texto)
+imagen_logo = Image.open("logo_real.png")
+imagen_logo = imagen_logo.resize((300, 150), Image.BICUBIC)
+photo = ImageTk.PhotoImage(imagen_logo)
+canvas_inicio.create_image(ancho_pantalla// 2, alto_pantalla// 2, image=photo, tags='image')
+
+inicio(canvas_inicio, imagen_logo, photo)
 ventana.mainloop()
