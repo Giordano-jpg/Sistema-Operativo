@@ -75,6 +75,24 @@ def actualizar_fecha_y_hora():
         ventana.after(1000, actualizar_fecha_y_hora)
 
 
+def ver_contenido_archivo(carpeta_dir, numero):
+    # Obtener la ruta del archivo de texto
+    archivo_path = os.path.join(carpeta_dir, f"carpeta{numero}_archivo.txt")
+    try:
+        # Intentar abrir el archivo y leer su contenido
+        with open(archivo_path, "r") as archivo:
+            contenido = archivo.read()
+        # Crear una nueva ventana para mostrar el contenido del archivo
+        ventana_contenido = tk.Toplevel()
+        ventana_contenido.title("Contenido del archivo")
+        # Crear un cuadro de texto para mostrar el contenido
+        text_box_contenido = tk.Text(ventana_contenido, wrap="word", width=40, height=10)
+        text_box_contenido.insert("1.0", contenido)
+        text_box_contenido.pack()
+    except FileNotFoundError:
+        messagebox.showerror("Error", "El archivo no existe.")
+
+
 def abrir_ventana_carpeta(numero):
     # Ruta de la carpeta correspondiente
     carpeta_dir = f"Carpeta_{numero}"
@@ -104,6 +122,10 @@ def abrir_ventana_carpeta(numero):
     boton_guardar = tk.Button(ventana_carpeta, text="Guardar", command=guardar_contenido)
     boton_guardar.pack()
 
+    # Botón para ver el contenido del archivo
+    boton_ver_contenido_archivo = tk.Button(ventana_carpeta, text="Ver Contenido del Archivo", command=lambda: ver_contenido_archivo(carpeta_dir, numero))
+    boton_ver_contenido_archivo.pack()
+
     # Función para listar y mostrar archivos en la carpeta
     def mostrar_contenido_carpeta():
         # Obtener la ruta completa de la carpeta correspondiente
@@ -118,7 +140,7 @@ def abrir_ventana_carpeta(numero):
     # Botón para borrar un archivo
     def borrar_archivo():
         # Construir la ruta del archivo utilizando os.path.join
-        archivo_path = os.path.join(carpeta_dir, f"carpeta{numero}_archivo.txt")
+        archivo_path = os.path.join(carpeta_dir, f"Carpeta{numero}_archivo.txt")
         if os.path.exists(archivo_path):
             os.remove(archivo_path)
             messagebox.showinfo("Información", "Archivo borrado.")
@@ -184,6 +206,9 @@ for nombre in nombres_carpetas:
 
 ventana = tk.Tk()
 ventana.attributes("-fullscreen", True)
+
+# Nombre
+ventana.title("NanOS")
 
 imagen_fondo = Image.open("Imágenes/fernando-alonso.png")
 imagen_fondo = imagen_fondo.resize((ventana.winfo_screenwidth(), ventana.winfo_screenheight()), Image.BICUBIC)
