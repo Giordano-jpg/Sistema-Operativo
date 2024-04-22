@@ -31,4 +31,6 @@ pip install Pygame
 
 ### ¡Importante!
 
+Se deben tener todos los archivos guardados en el mismo sitio para su correcto funcionamiento, en su defecto, si usted lo desea podría poner las rutas en las líneas de código donde se ejecutan los archivos.
+
 Asegúrate de que tu entorno de Python esté configurado correctamente para incluir Git y los paquetes requeridos. Si tienes problemas para importar bibliotecas o ejecutar el software, verifica que estas dependencias estén correctamente instaladas.
