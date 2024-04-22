@@ -9,9 +9,11 @@ from datetime import datetime
 proceso_juego = None
 proceso_terminal = None  # Nuevo proceso para la terminal
 
+
 def inicio(canvas, image, photo, alpha=0):
     canvas.delete("image")
     canvas.after(500, fade_in, canvas, image, photo, alpha)
+
 
 def fade_in(canvas, image, photo, alpha=0):
     if alpha < 1:
@@ -19,10 +21,11 @@ def fade_in(canvas, image, photo, alpha=0):
         canvas.delete('image')
         image.putalpha(int(alpha * 255))
         photo = ImageTk.PhotoImage(image)
-        canvas.create_image(ancho_pantalla//2, alto_pantalla//2, image=photo, tags='image')
+        canvas.create_image(ancho_pantalla // 2, alto_pantalla // 2, image=photo, tags='image')
         canvas.after(4, fade_in, canvas, image, photo, alpha)
     else:
         canvas.after(300, fade_out(canvas, image, photo))
+
 
 def fade_out(canvas, image, photo, alpha=1):
     if alpha > 0:
@@ -30,7 +33,7 @@ def fade_out(canvas, image, photo, alpha=1):
         canvas.delete('image')
         image.putalpha(int(alpha * 255))
         photo = ImageTk.PhotoImage(image)
-        canvas.create_image(ancho_pantalla//2, alto_pantalla//2, image=photo, tags='image')
+        canvas.create_image(ancho_pantalla // 2, alto_pantalla // 2, image=photo, tags='image')
         canvas.after(4, fade_out, canvas, image, photo, alpha)
     else:
         canvas.after(400, canvas.destroy())
@@ -39,8 +42,10 @@ def fade_out(canvas, image, photo, alpha=1):
 def boton_clicado():
     print("Botón clicado")
 
+
 def boton_clicado():
     print("Botón clicado")
+
 
 def cerrar_ventana():
     fondo_label.destroy()
@@ -49,7 +54,6 @@ def cerrar_ventana():
     boton3.destroy()
     boton4.destroy()
     boton5.destroy()
-    
 
     label_fecha_hora.destroy()
     bandera_label.destroy()
@@ -61,6 +65,7 @@ def cerrar_ventana():
     label_texto.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
     ventana.after(2500, ventana.destroy)
 
+
 def actualizar_fecha_y_hora():
     # Verificar si la etiqueta aún existe
     if label_fecha_hora.winfo_exists():
@@ -68,6 +73,7 @@ def actualizar_fecha_y_hora():
         fecha_hora_actual = now.strftime("%Y-%m-%d %H:%M:%S")
         label_fecha_hora.config(text=fecha_hora_actual)
         ventana.after(1000, actualizar_fecha_y_hora)
+
 
 def abrir_ventana_carpeta(numero):
     # Ruta de la carpeta correspondiente
@@ -105,7 +111,8 @@ def abrir_ventana_carpeta(numero):
         archivos_en_carpeta = os.listdir(carpeta_completa)
         messagebox.showinfo("Archivos en la carpeta", "\n".join(archivos_en_carpeta))
 
-    boton_ver_contenido = tk.Button(ventana_carpeta, text="Ver Contenido de la Carpeta", command=mostrar_contenido_carpeta)
+    boton_ver_contenido = tk.Button(ventana_carpeta, text="Ver Contenido de la Carpeta",
+                                    command=mostrar_contenido_carpeta)
     boton_ver_contenido.pack()
 
     # Botón para borrar un archivo
@@ -121,6 +128,7 @@ def abrir_ventana_carpeta(numero):
     boton_borrar_archivo = tk.Button(ventana_carpeta, text="Borrar Archivo", command=borrar_archivo)
     boton_borrar_archivo.pack()
 
+
 def abrir_explorador_de_archivos():
     # Crear la ventana secundaria
     ventana2 = tk.Toplevel()
@@ -128,7 +136,7 @@ def abrir_explorador_de_archivos():
     ventana2.title("Explorador de archivos")
 
     # Cargar y mostrar las imágenes de carpeta en horizontal con texto debajo
-    imagen_carpeta = Image.open("carpeta.png")
+    imagen_carpeta = Image.open("Imágenes/carpeta.png")
     imagen_carpeta = imagen_carpeta.resize((100, 100), Image.BICUBIC)
     imagen_carpeta = ImageTk.PhotoImage(imagen_carpeta)
 
@@ -143,10 +151,12 @@ def abrir_explorador_de_archivos():
 
     ventana2.mainloop()
 
+
 def iniciar_juego():
     global proceso_juego
     # Iniciar el proceso del juego
-    proceso_juego = subprocess.Popen(["python", "prueba_juego.py"])
+    proceso_juego = subprocess.Popen(["python", "Scripts/prueba_juego.py"])
+
 
 def ejecutar_script_terminal():
     import os
@@ -155,7 +165,7 @@ def ejecutar_script_terminal():
     directorio_actual = os.path.dirname(os.path.realpath(__file__))
 
     # Ruta al script de terminal dentro del mismo directorio
-    ruta_script = os.path.join(directorio_actual, "script_terminal.sh")
+    ruta_script = os.path.join(directorio_actual, "Scripts/script_terminal.sh")
 
     global proceso_terminal
     # Ejecutar el script en un proceso de terminal
@@ -165,7 +175,7 @@ def ejecutar_script_terminal():
 ventana = tk.Tk()
 ventana.attributes("-fullscreen", True)
 
-imagen_fondo = Image.open("fernando-alonso.png")
+imagen_fondo = Image.open("Imágenes/fernando-alonso.png")
 imagen_fondo = imagen_fondo.resize((ventana.winfo_screenwidth(), ventana.winfo_screenheight()), Image.BICUBIC)
 imagen_fondo = ImageTk.PhotoImage(imagen_fondo)
 
@@ -179,13 +189,13 @@ alto_pantalla = ventana.winfo_screenheight()
 
 estilo_boton = {"font": ("Helvetica", 12, "bold"), "bg": "#FF0000", "fg": "white", "relief": "raised", "bd": 2}
 
-imagen_original = Image.open("nano.jpg")
+imagen_original = Image.open("Imágenes/nano.jpg")
 imagen_original = imagen_original.resize((100, 100), Image.BICUBIC)
-imagen_carpeta = Image.open("icono_carpeta.png")
+imagen_carpeta = Image.open("Imágenes/icono_carpeta.png")
 imagen_carpeta = imagen_carpeta.resize((80, 80), Image.BICUBIC)
-imagen_original2 = Image.open("cabeza_prueba.jpg")
+imagen_original2 = Image.open("Imágenes/cabeza_prueba.jpg")
 imagen_original2 = imagen_original2.resize((100, 100), Image.BICUBIC)
-imagen_cmd = Image.open("cmd.png")  # Nueva imagen para el botón del script
+imagen_cmd = Image.open("Imágenes/cmd.png")  # Nueva imagen para el botón del script
 imagen_cmd = imagen_cmd.resize((100, 100), Image.BICUBIC)
 imagen_cmd = ImageTk.PhotoImage(imagen_cmd)
 
@@ -208,12 +218,10 @@ boton4.place(x=ancho_pantalla // 9, y=alto_pantalla // 5, width=100, height=100)
 boton5 = tk.Button(ventana, text="Cerrar", command=cerrar_ventana, **estilo_boton)
 boton5.place(x=ancho_pantalla // 80, y=alto_pantalla // 2.5, width=100, height=100)
 
-
-
 canvas_barra = tk.Canvas(ventana, bg="white")
 canvas_barra.place(x=ancho_pantalla // 2000, y=alto_pantalla // 1.08, width=ancho_pantalla, height=alto_pantalla // 13)
 
-imagen_original_bateria = Image.open("bateria-llena.png")
+imagen_original_bateria = Image.open("Imágenes/bateria-llena.png")
 ancho_original_bateria, alto_original_bateria = imagen_original_bateria.size
 
 ancho_deseado_bateria = 50
@@ -228,7 +236,7 @@ etiqueta_bateria = tk.Label(ventana, image=imagen_bateria)
 etiqueta_bateria.pack()
 etiqueta_bateria.place(relx=1.0, rely=1.0, anchor='se')
 
-imagen_bandera_espana = Image.open("bandera_espana.jpg")
+imagen_bandera_espana = Image.open("Imágenes/bandera_espana.jpg")
 imagen_bandera_espana = imagen_bandera_espana.resize((70, alto_pantalla // 14), Image.BICUBIC)
 imagen_bandera_espana_tk = ImageTk.PhotoImage(imagen_bandera_espana)
 bandera_label = tk.Label(ventana, image=imagen_bandera_espana_tk)
@@ -238,12 +246,12 @@ label_fecha_hora = tk.Label(ventana, font=("Arial", 18), bg="white")
 label_fecha_hora.place(relx=0.95, rely=0.99, anchor='se')
 actualizar_fecha_y_hora()
 
-canvas_inicio = tk.Canvas(ventana, bg = "black", width = ancho_pantalla, height = alto_pantalla, highlightthickness = 0)
+canvas_inicio = tk.Canvas(ventana, bg="black", width=ancho_pantalla, height=alto_pantalla, highlightthickness=0)
 canvas_inicio.pack()
-imagen_logo = Image.open("logo_real.png")
+imagen_logo = Image.open("Imágenes/logo_real.png")
 imagen_logo = imagen_logo.resize((300, 150), Image.BICUBIC)
 photo = ImageTk.PhotoImage(imagen_logo)
-canvas_inicio.create_image(ancho_pantalla// 2, alto_pantalla// 2, image=photo, tags='image')
+canvas_inicio.create_image(ancho_pantalla // 2, alto_pantalla // 2, image=photo, tags='image')
 
 inicio(canvas_inicio, imagen_logo, photo)
 ventana.mainloop()
