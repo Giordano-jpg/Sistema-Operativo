@@ -3,6 +3,7 @@ from PIL import Image, ImageTk
 import os
 from tkinter import messagebox
 import subprocess
+import sys
 from datetime import datetime
 
 # Mantener una referencia al proceso del juego
@@ -176,22 +177,35 @@ def abrir_explorador_de_archivos():
 
 def iniciar_juego():
     global proceso_juego
-    # Iniciar el proceso del juego
-    proceso_juego = subprocess.Popen(["python", "Scripts/prueba_juego.py"])
-
+    # Obtener la ruta completa de Python para asegurarse de que el sistema puede encontrarla
+    python_path = sys.executable
+    # Iniciar el proceso del juego usando la ruta completa de Python
+    proceso_juego = subprocess.Popen([python_path, "Scripts/prueba_juego.py"])
 
 def ejecutar_script_terminal():
-    import os
+
 
     # Obtener la ruta del directorio actual del script de Python
     directorio_actual = os.path.dirname(os.path.realpath(__file__))
 
-    # Ruta al script de terminal dentro del mismo directorio
-    ruta_script = os.path.join(directorio_actual, "Scripts/script_terminal.sh")
+    # Ruta al script de terminal dentro del directorio "Scripts"
+    ruta_script = os.path.join(directorio_actual, "Scripts", "script_terminal.sh")
 
+    # Imprimir la ruta para verificar que es correcta
+    print("Ejecutando el script desde la ruta:", ruta_script)
+
+    # Verificar que el archivo realmente existe
+    if not os.path.isfile(ruta_script):
+        raise FileNotFoundError(f"No se encontró el script: {ruta_script}")
+
+    # Ejecutar el script en una nueva terminal
+    # Usamos gnome-terminal para abrir en una nueva terminal
     global proceso_terminal
-    # Ejecutar el script en un proceso de terminal
-    proceso_terminal = subprocess.Popen(["cmd.exe", "/c", ruta_script])
+    proceso_terminal = subprocess.Popen(
+        ["gnome-terminal", "--", "bash", "-c", ruta_script]
+    )
+
+
 
 
 # Definir carpetas
