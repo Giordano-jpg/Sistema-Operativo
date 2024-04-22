@@ -172,6 +172,16 @@ def ejecutar_script_terminal():
     proceso_terminal = subprocess.Popen(["cmd.exe", "/c", ruta_script])
 
 
+# Definir carpetas
+nombres_carpetas = ["Carpeta_1", "Carpeta_2", "Carpeta_3"]
+
+# Iterar sobre los nombres y crear las carpetas
+for nombre in nombres_carpetas:
+    # Comprobar si la carpeta no existe antes de crearla
+    if not os.path.exists(nombre):
+        os.makedirs(nombre)
+
+
 ventana = tk.Tk()
 ventana.attributes("-fullscreen", True)
 
@@ -215,7 +225,7 @@ boton3.place(x=ancho_pantalla // 80, y=alto_pantalla // 5, width=100, height=100
 boton4 = tk.Button(ventana, text="Juego", command=iniciar_juego, **estilo_boton)
 boton4.place(x=ancho_pantalla // 9, y=alto_pantalla // 5, width=100, height=100)
 
-boton5 = tk.Button(ventana, text="Cerrar", command=cerrar_ventana, **estilo_boton)
+boton5 = tk.Button(ventana, text="Apagar", command=cerrar_ventana, **estilo_boton)
 boton5.place(x=ancho_pantalla // 80, y=alto_pantalla // 2.5, width=100, height=100)
 
 canvas_barra = tk.Canvas(ventana, bg="white")
