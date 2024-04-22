@@ -13,11 +13,11 @@ def ejecutar_juego():
     pygame.display.set_caption("Carreras con Alonso")
 
     # Cargar imagen del circuito y ajustar tamaño
-    circuito_imagen = pygame.image.load("Imágenes/prueba_circuito.jpg")
+    circuito_imagen = pygame.image.load("prueba_circuito.jpg")
     circuito_imagen = pygame.transform.scale(circuito_imagen, (ANCHO, ALTO))
 
     # Cargar imagen del coche y ajustar tamaño
-    coche_imagen_original = pygame.image.load("Imágenes/r25.png")
+    coche_imagen_original = pygame.image.load("r25.png")
     coche_imagen_original = pygame.transform.scale(coche_imagen_original, (70, 40))  # Ajustar al nuevo tamaño
 
     # Coordenadas, dirección y velocidad del coche
@@ -27,11 +27,11 @@ def ejecutar_juego():
     direccion = "derecha"
 
     # Cargar archivos de audio
-    canciones = ["Música/ALÉ ALONSO ALÉ - Bydaviz.mp3", "Música/El Nano.mp3"]
+    canciones = ["ALÉ ALONSO ALÉ - Bydaviz.mp3", "El Nano.mp3"]
     random.shuffle(canciones)  # Mezclar la lista de canciones de forma aleatoria
 
     # Cargar sonido de arranque del motor
-    arranque_motor = pygame.mixer.Sound("Música/v10_start.mp3")
+    arranque_motor = pygame.mixer.Sound("v10_start.mp3")
 
     # Estado del juego
     arrancado = False
